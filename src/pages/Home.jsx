@@ -7,13 +7,13 @@ function Home() {
 
     useEffect(() => {
         appwriteService.getPosts().then((posts) => {
-            if (posts) {//here sob post ko liya and setPosts mey documents sey show kara dea
+            if (posts) {
                 setPosts(posts.documents)
             }
         })
     }, [])
   
-    if (posts.length === 0) {//posts length 0 toh container ki undar text pass kar dea login karo to read posts
+    if (posts.length === 0) {
         return (
             <div className="w-full py-8 mt-4 text-center">
                 <Container>
@@ -32,7 +32,6 @@ function Home() {
         <div className='w-full py-8'>
             <Container>
                 <div className='flex flex-wrap'>
-                    {/* here loop laga liya sab post ki id sey match kara and spread ... sey ak satha sb post ko distract kar dea */}
                     {posts.map((post) => (
                         <div key={post.$id} className='w-1/4 p-2'>
                             <PostCard {...post} />

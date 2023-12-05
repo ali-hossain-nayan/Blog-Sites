@@ -9,28 +9,21 @@ export class Service{
     bucket;
     
     constructor(){
-        this.client//same as auth.js as class ar mto.when the object create of account then constructor
-        //call hbe then we call our client,databases,storage or say bucket call kore desi for avoiding 
-        //waste of code ar jonnu
+        this.client
         .setEndpoint(conf.appwriteUrl)
         .setProject(conf.appwriteProjectId);
-        this.databases = new Databases(this.client);//this are needed here databases and storage
+        this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
     }
 
 
-    //Now here we create the post and we pass those attributes we create in the appwrite 
-    //note : name combination of those attributes should be same for as its fucks my life to debugging
+    
     async createPost({title, slug, content, featuredImage, status, userId}){
         try {
-            return await this.databases.createDocument(//this line is appwrite syntactic sugar
-                conf.appwriteDatabaseId,//for create post we need databaseid we take it from conf
-                conf.appwriteCollectionId,//same as collectionid
-                slug,//here we need a unique Id so we can use unique Id method or say here we take the 
-                //slug as unique id which user pass us as slug value
-
-                //after this is the object.here we just pass our attribute names those are we create
-                //appwrite and pass here as parameterr.
+            return await this.databases.createDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug,
                 {
                     title,
                     content,
@@ -39,22 +32,19 @@ export class Service{
                     userId,
                 }
             )
-        } catch (error) {//just error showing msg
+        } catch (error) {
             console.log("Appwrite serive :: createPost :: error", error);
         }
     }
 
 
-    //for update is same often. we just get the id of the user and this id we get from slug
     async updatePost(slug, {title, content, featuredImage, status}){
-        try {//here we dont need the access of userId bcz whose id he should be update the post
-            //this are syntactic sugar
+        try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
 
-                //and inside object we just take the values we want to update
                 {
                     title,
                     content,
@@ -69,24 +59,22 @@ export class Service{
     }
 
 
-    //delete korar jonnu we dont need those parameters just take id i mean slug then delete the whole post
     async deletePost(slug){
         try {
-            await this.databases.deleteDocument(//here we dont return
+            await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug
             
             )
-            return true//we just return here that delete hoa gase..
+            return true
         } catch (error) {
             console.log("Appwrite serive :: deletePost :: error", error);
-            return false //here we just return that we delete hoy nai
+            return false 
         }
     }
 
 
-    //here defined to get the specific post just use slug and find the id 
     async getPost(slug){
         try {
             return await this.databases.getDocument(
@@ -102,13 +90,9 @@ export class Service{
     }
 
 
-    //here we return all the posts by using qureies
     async getPosts(queries = [Query.equal("status", "active")]){
-        //we need only those quries whose status is active
-        //note : in quries we have to give index key we have created in appwrite same name
-        //without settings indexing we cant use quries..if want we can use multiple indexing in appwrite
-        //and then use the query in the basis of indexing 
-        try {//syntactic sugar of lists of quries for appwrite doc
+        
+        try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
@@ -122,10 +106,9 @@ export class Service{
         }
     }
 
-    // file upload service
 
-    async uploadFile(file){//here we have to give file as variable not actual file name
-        try {//this lines syntactic sugar for upload file
+    async uploadFile(file){
+        try {
             return await this.bucket.createFile(
                 conf.appwriteBucketId,
                 ID.unique(),
@@ -138,11 +121,9 @@ export class Service{
     }
 
 
-    //delete file method note:here we pass the fileId..where its come from dont be paniked
-    //actually upload file method  a async ar vitor we return async function where actually we get fileId
-    // as return
+    
     async deleteFile(fileId){
-        try {//syntactic sugar
+        try {
             await this.bucket.deleteFile(
                 conf.appwriteBucketId,
                 fileId
@@ -155,8 +136,7 @@ export class Service{
     }
 
 
-    //File preview method
-    //here we dont need to use the async function as response quickly chole aasey. so direct access lay liya
+    
     getFilePreview(fileId){
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
@@ -167,5 +147,4 @@ export class Service{
 
 
 const service = new Service()
-export default service//here we dont pass the class name as we pass in config.js mey authSercie
-//we created the object export the object as we can take the access this object.
+export default service

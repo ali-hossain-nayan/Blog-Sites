@@ -14,11 +14,7 @@ export class ContactService {
 
   async submitContact({ name, email, message }) {
     try {
-      // Handle form submission and data storage, similar to the AuthService methods
-      // You can use the account object to store the contact form data
-      // For example, you can create a collection for contact forms in Appwrite and save the data there
-
-      // Replace the following with your data storage logic
+      
       const result = await this.saveContactData(name, email, message);
 
       if (result) {
@@ -33,13 +29,10 @@ export class ContactService {
 
   async saveContactData(name, email, message) {
     try {
-      // Initialize the Appwrite database service
       const database = this.client.database;
   
-      // Replace 'contactForms' with the name of the collection you create in Appwrite
       const collectionId = 'articles';
   
-      // Create a document with the contact form data
       const document = await database.createDocument(collectionId, {
         name,
         email,

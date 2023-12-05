@@ -4,23 +4,23 @@ import appwriteService from "../appwrite/config";
 import { useNavigate,  useParams } from 'react-router-dom';
 
 function EditPost() {
-    const [post, setPosts] = useState(null)//post ley liya as we can edit
-    const {slug} = useParams()//useParmams sey url ley liya slug ko
+    const [post, setPosts] = useState(null)
+    const {slug} = useParams()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (slug) {//slug hey toh
-            appwriteService.getPost(slug).then((post) => {//getPost sey post ley liya
+        if (slug) {
+            appwriteService.getPost(slug).then((post) => {
                 if (post) {
-                    setPosts(post)//then post ko set kar dea 
+                    setPosts(post)
                 }
             })
-        } else {//agar slug nehi toh home mey navigate kar dea
+        } else {
             navigate('/')
         }
-    }, [slug, navigate])//slug means url change howa,or navigate change howa dubara sey run karo
+    }, [slug, navigate])
 
-  return post ? (//reutrn ke undar aagr post hey tho edit karo nehi toh nehi karo
+  return post ? (
     <div className='py-8'>
         <Container>
             <PostForm post={post} />

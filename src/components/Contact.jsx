@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { setContactData } from "../store/contactSlice";
 import { useDispatch } from "react-redux";
 import { Button, Input, Logo } from "./index";
-// import ContactService from "../appwrite/contact"; // Import your authentication service
 import { useForm } from "react-hook-form";
 
 const Contact = () => {
@@ -13,12 +12,10 @@ const Contact = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
   
-    // Define the setContactData action
     const setContactData = (data) => {
       dispatch({ type: "SET_CONTACT_DATA", payload: data });
     };
   
-    // Define the clearContactData action
     const clearContactData = () => {
       dispatch({ type: "CLEAR_CONTACT_DATA" });
     };
@@ -30,15 +27,11 @@ const Contact = () => {
       try {
         setContactData(data);
   
-        // Handle the contact form submission logic here
-        // ...
-  
-        // After successful submission, clear the form data
+        
         clearContactData();
   
         setSuccess("Form submitted successfully!");
   
-        // Clear the form fields
         setValue("name", "");
         setValue("email", "");
         setValue("message", "");
@@ -49,7 +42,6 @@ const Contact = () => {
       }
     };
   
-    // Your JSX code for the Contact form
   
     return (
       <div className="flex items-center justify-center w-full">
@@ -79,8 +71,8 @@ const Contact = () => {
                 required: true,
               })}
             />
-            {error && <p className="text-red-600 mt-4">{error}</p>}
-            {success && <p className="text-green-600 mt-4">{success}</p>}
+            {error && <p className="mt-4 text-red-600">{error}</p>}
+            {success && <p className="mt-4 text-green-600">{success}</p>}
             <Button type="submit" className="w-full">
               Submit
             </Button>
