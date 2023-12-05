@@ -1,0 +1,47 @@
+import React, {useEffect, useState} from 'react'
+import appwriteService from "../appwrite/config";
+import {Container, PostCard} from '../components'
+
+function Home() {
+    const [posts, setPosts] = useState([])
+
+    useEffect(() => {
+        appwriteService.getPosts().then((posts) => {
+            if (posts) {//here sob post ko liya and setPosts mey documents sey show kara dea
+                setPosts(posts.documents)
+            }
+        })
+    }, [])
+  
+    if (posts.length === 0) {//posts length 0 toh container ki undar text pass kar dea login karo to read posts
+        return (
+            <div className="w-full py-8 mt-4 text-center">
+                <Container>
+                    <div className="flex flex-wrap">
+                        <div className="w-full p-2">
+                            <h1 className="text-2xl font-bold hover:text-gray-500">
+                                Login to read and add posts
+                            </h1>
+                        </div>
+                    </div>
+                </Container>
+            </div>
+        )
+    }
+    return (
+        <div className='w-full py-8'>
+            <Container>
+                <div className='flex flex-wrap'>
+                    {/* here loop laga liya sab post ki id sey match kara and spread ... sey ak satha sb post ko distract kar dea */}
+                    {posts.map((post) => (
+                        <div key={post.$id} className='w-1/4 p-2'>
+                            <PostCard {...post} />
+                        </div>
+                    ))}
+                </div>
+            </Container>
+        </div>
+    )
+}
+
+export default Home
